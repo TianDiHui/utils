@@ -15,7 +15,7 @@
 '''
 import os
 
-# from bin.AccessToken.GetToken.GetAccesToken import getname
+# from BaiduTextApi.bin.AccessToken.GetToken.GetAccesToken import getname
 
 #
 ACCESS_TOKEN = ''

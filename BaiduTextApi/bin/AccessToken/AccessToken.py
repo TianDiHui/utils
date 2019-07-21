@@ -12,7 +12,8 @@
 # ACCESS_TOKEN_URL用于获取ACCESS_TOKEN, POST请求,
 # grant_type必须参数,固定为client_credentials,client_id必须参数,应用的API Key,client_secre 必须参数,应用的Secret Key.
 import requests
-from config.config import URL_LIST_URL
+from BaiduTextApi.config.config import URL_LIST_URL
+
 
 
 class AccessTokenSuper(object):

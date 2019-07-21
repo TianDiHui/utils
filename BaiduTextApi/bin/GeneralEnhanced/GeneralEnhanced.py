@@ -31,8 +31,8 @@
 import os
 import base64
 import requests
-from config.config import LOCALHOST_PATH, URL_LIST_URL
-from bin.AccessToken.AccessToken import AccessToken
+from BaiduTextApi.config.config import LOCALHOST_PATH, URL_LIST_URL
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
 
 ACCESS_TOKEN = AccessToken().getToken()['access_token']
 GENNERAL_ENHANCED_URL = URL_LIST_URL['GENNERAL_ENHANCED'] + '?access_token={}'.format(ACCESS_TOKEN)

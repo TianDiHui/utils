@@ -11,8 +11,8 @@
 import os
 import base64
 import requests
-from bin.AccessToken.AccessToken import AccessToken
-from config.config import URL_LIST_URL, LOCALHOST_PATH
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
+from BaiduTextApi.config.config import URL_LIST_URL, LOCALHOST_PATH
 
 ACCESS_TOKEN = AccessToken().getToken()['access_token']
 IDCARD_URL = URL_LIST_URL['IDCARD'] + '?access_token={}'.format(ACCESS_TOKEN)

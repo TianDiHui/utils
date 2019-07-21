@@ -14,6 +14,8 @@ from .find_image import search_img
 def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, del_shot_image=True):
     # 判断是否存在某个图片特征
     adb = ADButil(dName)
+    screen_image_path = adb.screenshot()
+
     if wait > 0:
         start_time = time.time()
         while start_time + wait > time.time():
@@ -67,7 +69,9 @@ class ADButil(object):
     # https://blog.csdn.net/jlminghui/article/details/39268419
     def __init__(self, dname='', dname_list=[]):
         self.dname = dname  # 当前设备
+
         self.dname_list = dname_list  # 设备列表
+        self.getDevicesAll()
 
     def swipe(self, hight=200):
         x = random.randint(350, 450)
@@ -79,8 +83,8 @@ class ADButil(object):
 
     def startup_app_by_image(self, image_path):
         print('启动应用')
-        adb.goto_home()
-        screen_image_click(dName, image_path)
+        self.goto_home()
+        screen_image_click(self.dname, image_path)
         # 等待
         time.sleep(6)
 
@@ -106,7 +110,7 @@ class ADButil(object):
         else:
             enable = 'disable'
 
-        os_system("adb -s %S shell svc wifi %s" % (self.dname, enable))
+        os_system("adb -s %s shell svc wifi %s" % (self.dname, enable))
 
     def put_screen_brightness(self, value=15):
         print('调整屏幕亮度:' + str(value))
@@ -131,12 +135,16 @@ class ADButil(object):
             for dName_ in os.popen("adb devices"):
                 if "\t" in dName_:
                     # 真机
-                    devices_list.append(dName_.split("\t")[0])
+                    pname = dName_.split("\t")[0]
+                    print('设备名称：' + pname)
+                    os_system('adb -s %s -d shell getprop ro.product.brand' % (pname))
+                    os_system('adb -s %s -d shell getprop ro.product.model' % (pname))
+                    devices_list.append(pname)
                     # 模拟器检索
                     # findres = dName_.find("emulator")
                     # if findres != -1:
                     #     devices.append(dName_.split("\t")[0])
-            devices_list.sort(cmp=None, key=None, reverse=False)
+            # devices_list.sort(cmp=None, key=None, reverse=False)
         except Exception as e:
             print(e)
         print("\n设备名称: %s \n总数量:%s台" % (devices_list, len(devices_list)))
@@ -146,9 +154,9 @@ class ADButil(object):
         print('返回主页')
         self.input_keyevent(3)  # 返回主页
         self.input_keyevent(3)  # 返回主页
-        # self.input_keyevent(3)  # 返回主页
-        # self.input_keyevent(3)  # 返回主页
-        # self.input_keyevent(3)  # 返回主页
+        self.input_keyevent(3)  # 返回主页
+        self.input_keyevent(3)  # 返回主页
+        self.input_keyevent(3)  # 返回主页
 
     def goback(self, times=1):
         print('返回')

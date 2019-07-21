@@ -11,8 +11,8 @@
 import os
 import base64
 import requests
-from bin.AccessToken.AccessToken import AccessToken
-from config.config import LOCALHOST_PATH, URL_LIST_URL
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
+from BaiduTextApi.config.config import LOCALHOST_PATH, URL_LIST_URL
 
 ACCESS_TOKEN = AccessToken().getToken()['access_token']
 

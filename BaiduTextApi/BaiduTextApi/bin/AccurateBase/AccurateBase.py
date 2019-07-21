@@ -28,8 +28,8 @@
 import os
 import base64
 import requests
-from config.config import URL_LIST_URL, LOCALHOST_PATH
-from bin.AccessToken.AccessToken import AccessToken
+from BaiduTextApi.config.config import URL_LIST_URL, LOCALHOST_PATH
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
 
 ACCESS_TOKEN = AccessToken().getToken()
 ACCURATE_BASIC_URL = URL_LIST_URL['ACCURATE_BASIC'] + '?access_token={}'.format(ACCESS_TOKEN['access_token'])

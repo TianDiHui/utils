@@ -7,46 +7,47 @@
 # @MyBlog  : WWW.SHUJIAN.ORG
 # @NetName : 書劍
 # @Software: 百度识图Api封装
-from bin.AccessToken.AccessToken import AccessToken  # 测试获取AccessToken
-from bin.GeneralBasic.GeneralBasic import GeneralBase  # 测试通用文字识别
-from bin.AccurateBase.AccurateBase import AccurateBase  # 通用文字识别(高精度版)
-from bin.General.General import General  # 通用文字识别（含位置信息版）
-from bin.Accurate.Accurate import Accurate  # 通用文字识别（含位置高精度版）
-from bin.GeneralEnhanced.GeneralEnhanced import GenneralEnhanced  # 通用文字识别（含生僻字版）
-from bin.WebImage.WebImage import WebImage  # 网络图片文字识别
-from bin.HandWriTing.HandwRiTing import HandwRiTing  # 手写文字识别
-from bin.Idcard.Idcard import Idcard  # 身份证识别
-from bin.BankCard.BankCard import BankCard  # 银行卡识别
-from bin.BusinessLicense.BusinessLicense import BusinessLicense  # 营业执照识别
-from bin.Passport.Passport import Passport  # 护照识别
-from bin.BusunessCard.BusunessCard import BusunessCard  # 名片识别
-from bin.HouseholdRegister.HouseholdRegister import HouseholdRegister  # 户口本识别
-from bin.BirthCertificate.BirthCertificate import BirthCerTificate  # 出生医学证明识别
-from bin.HkMacauExitentrpermit.HkMacauExitentrpermit import HkMavauExitentrpermit  # 港澳通行证识别
-from bin.TaiwanExitentrupermit.TaiwanExitentrupermit import TaiwanExitentrupermit  # 台湾通行证识别
-from bin.FormOrc.FormOrc import FormOrcRequest, FormOrcGetRequestResult  # 表格文字识别(异步接口)
-from bin.Form.Form import Form  # 表格文字识别(同步接口)
-from bin.Receipt.Receipt import Receipt  # 通用票据识别
-from bin.VatInvouce.VatInvoice import VatInvoice  # 增值税发票识别
-from bin.TrainTicket.TrainTicket import TrainTicket  # 火车票识别
-from bin.TaxiReceipt.TaxiReceipt import TaxiReceipt  # 出租车票识别
-from bin.QuotaInvoice.QuotaInvoice import QuotaInvoice  # 定额发票识别
-from bin.DrivingLicense.DrivingLicense import DrivingLicense  # 驾驶证识别
-from bin.VehicleLicense.VehicleLicense import VehicleLicense  # 行驶证识别
-from bin.LicensePlate.LicensePlate import LicensePlate  # 车牌号识别
-from bin.carInfo.car_info import CarInfo  # 车牌号识别
-from bin.VehicleInvoice.VehicleInvoice import VehicleInvoice  # 机动车销售发票识别
-from bin.VehicleCertificate.VehicleCertificate import VehicleCertificate  # 车辆合格证识别
-from bin.VinCode.VinCode import VinCode  # 车辆VIN码识别
-from bin.Qrcode.Qrcode import Qrcode  # 二维码识别
-from bin.Numbers.Numbers import Numbers  # 数字识别
-from bin.Lottery.Lottery import Lottery  # 彩票识别
-from bin.InsuranceDocuments.InsuranceDocuments import InsuranceDocuments  # 保单识别
-from bin.Invoice.Invoice import Invoice  # 税务局通用机打发票识别
-from bin.AirTicket.AirTicket import AirTicket  # 行程单识别
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken  # 测试获取AccessToken
+from BaiduTextApi.bin.GeneralBasic.GeneralBasic import GeneralBase  # 测试通用文字识别
+from BaiduTextApi.bin.AccurateBase.AccurateBase import AccurateBase  # 通用文字识别(高精度版)
+from BaiduTextApi.bin.General.General import General  # 通用文字识别（含位置信息版）
+from BaiduTextApi.bin.Accurate.Accurate import Accurate  # 通用文字识别（含位置高精度版）
+from BaiduTextApi.bin.GeneralEnhanced.GeneralEnhanced import GenneralEnhanced  # 通用文字识别（含生僻字版）
+from BaiduTextApi.bin.WebImage.WebImage import WebImage  # 网络图片文字识别
+from BaiduTextApi.bin.HandWriTing.HandwRiTing import HandwRiTing  # 手写文字识别
+from BaiduTextApi.bin.Idcard.Idcard import Idcard  # 身份证识别
+from BaiduTextApi.bin.BankCard.BankCard import BankCard  # 银行卡识别
+from BaiduTextApi.bin.BusinessLicense.BusinessLicense import BusinessLicense  # 营业执照识别
+from BaiduTextApi.bin.Passport.Passport import Passport  # 护照识别
+from BaiduTextApi.bin.BusunessCard.BusunessCard import BusunessCard  # 名片识别
+from BaiduTextApi.bin.HouseholdRegister.HouseholdRegister import HouseholdRegister  # 户口本识别
+from BaiduTextApi.bin.BirthCertificate.BirthCertificate import BirthCerTificate  # 出生医学证明识别
+from BaiduTextApi.bin.HkMacauExitentrpermit.HkMacauExitentrpermit import HkMavauExitentrpermit  # 港澳通行证识别
+from BaiduTextApi.bin.TaiwanExitentrupermit.TaiwanExitentrupermit import TaiwanExitentrupermit  # 台湾通行证识别
+from BaiduTextApi.bin.FormOrc.FormOrc import FormOrcRequest, FormOrcGetRequestResult  # 表格文字识别(异步接口)
+from BaiduTextApi.bin.Form.Form import Form  # 表格文字识别(同步接口)
+from BaiduTextApi.bin.Receipt.Receipt import Receipt  # 通用票据识别
+from BaiduTextApi.bin.VatInvouce.VatInvoice import VatInvoice  # 增值税发票识别
+from BaiduTextApi.bin.TrainTicket.TrainTicket import TrainTicket  # 火车票识别
+from BaiduTextApi.bin.TaxiReceipt.TaxiReceipt import TaxiReceipt  # 出租车票识别
+from BaiduTextApi.bin.QuotaInvoice.QuotaInvoice import QuotaInvoice  # 定额发票识别
+from BaiduTextApi.bin.DrivingLicense.DrivingLicense import DrivingLicense  # 驾驶证识别
+from BaiduTextApi.bin.VehicleLicense.VehicleLicense import VehicleLicense  # 行驶证识别
+from BaiduTextApi.bin.LicensePlate.LicensePlate import LicensePlate  # 车牌号识别
+ 
+from BaiduTextApi.bin.VehicleInvoice.VehicleInvoice import VehicleInvoice  # 机动车销售发票识别
+from BaiduTextApi.bin.VehicleCertificate.VehicleCertificate import VehicleCertificate  # 车辆合格证识别
+from BaiduTextApi.bin.VinCode.VinCode import VinCode  # 车辆VIN码识别
+from BaiduTextApi.bin.Qrcode.Qrcode import Qrcode  # 二维码识别
+from BaiduTextApi.bin.Numbers.Numbers import Numbers  # 数字识别
+from BaiduTextApi.bin.Lottery.Lottery import Lottery  # 彩票识别
+from BaiduTextApi.bin.InsuranceDocuments.InsuranceDocuments import InsuranceDocuments  # 保单识别
+from BaiduTextApi.bin.Invoice.Invoice import Invoice  # 税务局通用机打发票识别
+from BaiduTextApi.bin.AirTicket.AirTicket import AirTicket  # 行程单识别
+from BaiduTextApi.bin.carInfo.car_info import CarInfo
 
 if __name__ == '__main__':
-    image = 'generalBasic.png'  # 普通图片
+    image = 'TIM_cp20190721102801.jpg'  # 普通图片
     IDCARD_IMAGE = ['IDCARD0.jpeg', 'IDCARD1.png']  # 身份证识别测试照片 0正面，1反面
     BANK_CARD_IMAGE = 'bankcard.jpeg'  # 银行卡
     BUSINESS_LICENSE = 'business_license.jpeg'  # 营业执照
@@ -67,15 +68,16 @@ if __name__ == '__main__':
 
     # 测试获取AccessToken
     testAccessToken = AccessToken()
-    print('Access_token:', testAccessToken.getToken())
+    # print('Access_token:', testAccessToken.getToken())
 
     # # 测试通用文字识别
     # testGeneralBasic = GeneralBase(image=image)
     # print('通用文字识别：', testGeneralBasic.postGeneralBase())
     #
-    # # 通用文字识别(高精度版)
-    # testAccurateBase = AccurateBase(image=image)
-    # print('通用文字识别(高精度版):', testAccurateBase.postAccurateBase())
+    # 通用文字识别(高精度版)
+    testAccurateBase = AccurateBase(image=image)
+    print('通用文字识别(高精度版):', testAccurateBase.postAccurateBase())
+    print('通用文字识别(高精度版):', testAccurateBase.postAccurateBase())
     #
     # # 通用文字识别（含位置信息版）
     # testGeneral = General(image=image)

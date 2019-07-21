@@ -44,8 +44,8 @@
 import os
 import base64
 import requests
-from config.config import LOCALHOST_PATH, URL_LIST_URL
-from bin.AccessToken.AccessToken import AccessToken
+from BaiduTextApi.config.config import LOCALHOST_PATH, URL_LIST_URL
+from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
 
 ACCESS_TOKEN = AccessToken().getToken()
 ACCURATE_URL = URL_LIST_URL['ACCURATE'] + '?access_token={ACCESS_TOKEN}'.format(
