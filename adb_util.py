@@ -1,14 +1,24 @@
 # -*- coding: utf-8 -*-
-
+# http://adbshell.com/commands
 # https://zhuanlan.zhihu.com/p/43731848
 import base64
 import os
 import random
 import re
+import subprocess
 import time
 
 # 点击某个图片
+import delegator
+
 from .find_image import search_img
+
+
+def popen(cmd):
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    popen.wait()
+    lines = popen.stdout.readlines()
+    return [line.decode('gbk') for line in lines]
 
 
 def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, del_shot_image=True):
@@ -24,7 +34,7 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, 
             pos = search_img(screen_image_path, image_name, confidencevalue)
             if del_shot_image:
                 os.remove(screen_image_path)
-            if pos[0] != -1 and pos[0] != -1:
+            if pos[0] != -1 and pos[1] != -1:
                 break
             time.sleep(1)
     else:
@@ -40,10 +50,10 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, 
 def screen_image_click(dName, image_name, confidencevalue=0.7, wait=5, del_shot_image=True):
     adb = ADButil(dName)
     screen_image_path = adb.screenshot()
-    pos = search_img(screen_image_path, image_name, confidencevalue)
-    if pos[0] != -1 and pos[0] != -1:
-        adb.click(pos[0], pos[1])
-        return pos
+    # pos = search_img(screen_image_path, image_name, confidencevalue)
+    # if pos[0] != -1 and pos[1] != -1:
+    #     adb.click(pos[0], pos[1])
+    #     return pos
 
     if wait > 0:
         start_time = time.time()
@@ -56,7 +66,7 @@ def screen_image_click(dName, image_name, confidencevalue=0.7, wait=5, del_shot_
                     os.remove(screen_image_path)
                 except:
                     pass
-            if pos[0] != -1 and pos[0] != -1:
+            if pos[0] != -1 and pos[1] != -1:
                 break
             time.sleep(1)
     else:
@@ -73,13 +83,22 @@ class ADButil(object):
         self.dname_list = dname_list  # 设备列表
         self.getDevicesAll()
 
-    def swipe(self, hight=200):
-        x = random.randint(350, 450)
-        y1 = random.randint(800, 850)
-        y2 = y1 - random.randint(hight, hight + 10)
+    def page_refresh(self):
+        self.swipe(toup=False, height=600)
+        time.sleep(5)
 
-        os_system(
-            "adb -s " + self.dname + " shell input swipe %d %d %d %d 1500 &" % (x, y1, x, y2))  # 后台执行 小米800-200
+    def swipe(self, height=200, times=1, toup=True):
+        for r in range(0, times):
+            x = random.randint(350, 850)
+            y1 = random.randint(1000, 1050)
+            y2 = y1 - random.randint(height, height + 50)
+            if toup:
+                os_system(
+                    "adb -s " + self.dname + " shell input swipe %d %d %d %d 1500 &" % (x, y1, x, y2))  # 后台执行 小米800-200
+            else:
+                os_system(
+                    "adb -s " + self.dname + " shell input swipe %d %d %d %d 1500 &" % (x, y2, x, y1))  # 后台执行 小米800-200
+            time.sleep(1)
 
     def startup_app_by_image(self, image_path):
         print('启动应用')
@@ -88,7 +107,14 @@ class ADButil(object):
         # 等待
         time.sleep(6)
 
-    def kill_app(self, packname):
+    def startup_app(self, startup_path, wait=7):
+        # >adb shell dumpsys window windows | grep mCurrent
+        print('启动应用：' + startup_path)
+        os_system("adb -s %s shell am start -n %s" % (self.dname, startup_path))
+        time.sleep(wait)
+
+    def kill_app(self, packname, wait=1):
+        time.sleep(wait)
         print('关闭应用：' + packname)
         os_system("adb -s %s shell am force-stop %s" % (self.dname, packname))
 
@@ -153,10 +179,18 @@ class ADButil(object):
     def goto_home(self):
         print('返回主页')
         self.input_keyevent(3)  # 返回主页
-        self.input_keyevent(3)  # 返回主页
-        self.input_keyevent(3)  # 返回主页
-        self.input_keyevent(3)  # 返回主页
-        self.input_keyevent(3)  # 返回主页
+
+    def show_screen(self):
+
+        mScreenOn = re.search('mScreenOn=true', os.popen('adb -s %s shell dumpsys power'% (self.dname)).read())
+        print(mScreenOn)
+        if mScreenOn == None:
+            print('锁屏状态')
+            self.input_keyevent(26)
+        else:
+            print('非锁屏状态')
+
+
 
     def goback(self, times=1):
         print('返回')
@@ -193,13 +227,13 @@ class ADButil(object):
             time.sleep(2)
             os_system('adb  -s %s shell am broadcast -a ADB_INPUT_B64 --es msg "%s"' % (
                 self.dname, text))
-            # os_system('adb -s %s  shell am broadcast -a ADB_EDITOR_CODE --ei code 4' % (self.dname))
+            os_system('adb -s %s  shell am broadcast -a ADB_EDITOR_CODE --ei code 4' % (self.dname))
             # os_system('adb -s %s shell input text "%s"' % (self.dname, text))  # 无法输入中文
             # 还原输入法
             # 查看输入法 adb shell ime list -s
             time.sleep(2)
-            os_system('adb -s %s  shell ime set com.baidu.input_huawei/.ImeService' % (self.dname))
-            time.sleep(3)
+            # os_system('adb -s %s  shell ime set com.baidu.input_huawei/.ImeService' % (self.dname))
+            # time.sleep(3)
         else:
             print('发送文本：' + text)
 
