@@ -100,12 +100,12 @@ class ADButil(object):
                     "adb -s " + self.dname + " shell input swipe %d %d %d %d 1500 &" % (x, y2, x, y1))  # 后台执行 小米800-200
             time.sleep(1)
 
-    def startup_app_by_image(self, image_path):
+    def startup_app_by_image(self, image_path,wait=7):
         print('启动应用')
         self.goto_home()
         screen_image_click(self.dname, image_path)
         # 等待
-        time.sleep(6)
+        time.sleep(wait)
 
     def startup_app(self, startup_path, wait=7):
         # >adb shell dumpsys window windows | grep mCurrent

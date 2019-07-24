@@ -25,11 +25,13 @@
 ## 字段：+words，	                是否必选：否	    类型：string，	说明：识别结果字符串
 ## 字段：probability，	        是否必选：否	    类型：object	，	说明：识别结果中每一行的置信度值，包含average：行置信度平均值，variance：行置信度方差，min：行置信度最小值
 
-import os
 import base64
+import os
+from utils.BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
+from utils.BaiduTextApi.config.config import URL_LIST_URL
+
 import requests
-from BaiduTextApi.config.config import URL_LIST_URL, LOCALHOST_PATH
-from BaiduTextApi.bin.AccessToken.AccessToken import AccessToken
+
 
 ACCESS_TOKEN = AccessToken().getToken()
 ACCURATE_BASIC_URL = URL_LIST_URL['ACCURATE_BASIC'] + '?access_token={}'.format(ACCESS_TOKEN['access_token'])
@@ -52,9 +54,9 @@ class AccurateBase(object):
         }
 
         if image is not None:
-            imagepath = os.path.exists(LOCALHOST_PATH['PATH'] + image)
+            imagepath = os.path.exists(image)
             if imagepath == True:
-                images = LOCALHOST_PATH['PATH'] + image
+                images = image
                 with open(images, 'rb') as images:
                     self.IMAGE_CONFIG['image'] = base64.b64encode(images.read())
 

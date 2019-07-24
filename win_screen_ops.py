@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-from find_image import search_img
+from utils.find_image import search_img
 
 import pyautogui
 
@@ -13,7 +13,7 @@ class WinScreen(object):
     # 截屏
     def shots(self, x=0, y=0, w=pyautogui.size()[0], h=pyautogui.size()[1],
               file_path='./Screenshots/win_screenshot_' + str(int(time.time())) + '.jpg'):
-        img = pyautogui.screenshot(x, y, w, h)  # x,y,w,h
+        img = pyautogui.screenshot(region=(x, y, w, h))  # x,y,w,h
         img.save(file_path)
         return file_path
         # img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)

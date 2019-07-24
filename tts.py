@@ -120,6 +120,7 @@ def text2audio(text, mp3_path='baidu_yuyin.mp3'):
         print("tts api  error:" + result_str)
 
     print("result saved as :" + save_file)
+    return  save_file
 
 
 # text2audio('珠穆朗玛峰')
