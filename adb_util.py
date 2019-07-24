@@ -21,7 +21,7 @@ def popen(cmd):
     return [line.decode('gbk') for line in lines]
 
 
-def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, del_shot_image=True):
+def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=3, del_shot_image=True):
     # 判断是否存在某个图片特征
     adb = ADButil(dName)
     screen_image_path = adb.screenshot()
@@ -36,7 +36,7 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, 
                 os.remove(screen_image_path)
             if pos[0] != -1 and pos[1] != -1:
                 break
-            time.sleep(1)
+            # time.sleep(1)
     else:
         pos = search_img(screen_image_path, image_name, confidencevalue)
 
@@ -47,7 +47,7 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=5, 
         return False
 
 
-def screen_image_click(dName, image_name, confidencevalue=0.7, wait=5, del_shot_image=True):
+def screen_image_click(dName, image_name, confidencevalue=0.7, wait=3, del_shot_image=True):
     adb = ADButil(dName)
     screen_image_path = adb.screenshot()
     # pos = search_img(screen_image_path, image_name, confidencevalue)
@@ -68,7 +68,7 @@ def screen_image_click(dName, image_name, confidencevalue=0.7, wait=5, del_shot_
                     pass
             if pos[0] != -1 and pos[1] != -1:
                 break
-            time.sleep(1)
+            # time.sleep(1)
     else:
         pos = search_img(screen_image_path, image_name, confidencevalue)
     adb.click(pos[0], pos[1])
@@ -81,7 +81,7 @@ class ADButil(object):
         self.dname = dname  # 当前设备
 
         self.dname_list = dname_list  # 设备列表
-        self.getDevicesAll()
+        # self.getDevicesAll()
 
     def page_refresh(self):
         self.swipe(toup=False, height=600)
@@ -148,11 +148,12 @@ class ADButil(object):
 
         # 获取分辨率
         # 获取屏幕分辨率计算屏幕中心
-        f = os.popen("adb -s " + self.dName + " shell wm size")
+        f = os.popen("adb -s " + self.dname + " shell wm size")
         screen_width, screen_height = re.search("(\d{3,4})x(\d{3,4})", f.read()).groups()
         center = (int(screen_width) / 2, int(screen_height) / 2)
-        screenWH.append([int(screen_width), int(screen_height)])
-        return screenWH
+        # screenWH.append([int(screen_width), int(screen_height)])
+        print ('屏幕宽高：%sx%s'%(screen_width, screen_height))
+        return (int(screen_width), int(screen_height))
 
     def getDevicesAll(self):
         # 获取所有设备
@@ -176,9 +177,10 @@ class ADButil(object):
         print("\n设备名称: %s \n总数量:%s台" % (devices_list, len(devices_list)))
         return devices_list
 
-    def goto_home(self):
+    def goto_home(self,times=1):
         print('返回主页')
-        self.input_keyevent(3)  # 返回主页
+        for r in range(0,times):
+            self.input_keyevent(3)  # 返回主页
 
     def show_screen(self):
 
