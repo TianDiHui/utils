@@ -6,8 +6,9 @@ class FFMPEG():
     def __init__(self):
         pass
 
-    def screen_capture_recorder(self, times, w, h, x, y, save_path):
+    def screen_capture_recorder(self, time, w, h, x, y, save_path):
         print('开始录屏')
         Popen(
             'ffmpeg -y -t %s -f dshow -i video="screen-capture-recorder" -vf crop=w=%s:h=%s:x=%s:y=%s -qp 0 -preset ultrafast %s' % (
-                times, w, h,x, y, save_path))
+                time, w, h,x, y, save_path))
+        

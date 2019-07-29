@@ -8,8 +8,10 @@ import re
 import subprocess
 import time
 
-# 点击某个图片
+# https://pypi.org/project/delegator.py/
 import delegator
+# https://pypi.org/project/loguru/
+from loguru import logger
 
 from .find_image import search_img
 
@@ -24,7 +26,6 @@ def popen(cmd):
 def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=3, del_shot_image=True):
     # 判断是否存在某个图片特征
     adb = ADButil(dName)
-    screen_image_path = adb.screenshot()
 
     if wait > 0:
         start_time = time.time()
@@ -36,8 +37,10 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=3, 
                 os.remove(screen_image_path)
             if pos[0] != -1 and pos[1] != -1:
                 break
-            # time.sleep(1)
+            time.sleep(1)
     else:
+        screen_image_path = adb.screenshot()
+
         pos = search_img(screen_image_path, image_name, confidencevalue)
 
     print(pos)
@@ -49,7 +52,6 @@ def phone_screen_if_exist_image(dName, image_name, confidencevalue=0.7, wait=3, 
 
 def screen_image_click(dName, image_name, confidencevalue=0.7, wait=3, del_shot_image=True):
     adb = ADButil(dName)
-    screen_image_path = adb.screenshot()
     # pos = search_img(screen_image_path, image_name, confidencevalue)
     # if pos[0] != -1 and pos[1] != -1:
     #     adb.click(pos[0], pos[1])
@@ -68,8 +70,10 @@ def screen_image_click(dName, image_name, confidencevalue=0.7, wait=3, del_shot_
                     pass
             if pos[0] != -1 and pos[1] != -1:
                 break
-            # time.sleep(1)
+            time.sleep(1)
     else:
+        screen_image_path = adb.screenshot()
+
         pos = search_img(screen_image_path, image_name, confidencevalue)
     adb.click(pos[0], pos[1])
     return pos
@@ -82,6 +86,12 @@ class ADButil(object):
 
         self.dname_list = dname_list  # 设备列表
         # self.getDevicesAll()
+        ret = os_system('adb -s %s -d shell getprop ro.product.brand' % (self.dname))
+        if ret.err !='':
+            logger.error('设备连接失败')
+            self.error = 1
+        else:
+            self.error = 0
 
     def page_refresh(self):
         self.swipe(toup=False, height=600)
@@ -100,10 +110,10 @@ class ADButil(object):
                     "adb -s " + self.dname + " shell input swipe %d %d %d %d 1500 &" % (x, y2, x, y1))  # 后台执行 小米800-200
             time.sleep(1)
 
-    def startup_app_by_image(self, image_path,wait=7):
+    def startup_app_by_image(self, image_path, wait=7):
         print('启动应用')
-        self.goto_home()
-        screen_image_click(self.dname, image_path)
+        self.goto_home(4)
+        screen_image_click(self.dname, image_path,0.5)
         # 等待
         time.sleep(wait)
 
@@ -152,7 +162,7 @@ class ADButil(object):
         screen_width, screen_height = re.search("(\d{3,4})x(\d{3,4})", f.read()).groups()
         center = (int(screen_width) / 2, int(screen_height) / 2)
         # screenWH.append([int(screen_width), int(screen_height)])
-        print ('屏幕宽高：%sx%s'%(screen_width, screen_height))
+        print('屏幕宽高：%sx%s' % (screen_width, screen_height))
         return (int(screen_width), int(screen_height))
 
     def getDevicesAll(self):
@@ -177,14 +187,14 @@ class ADButil(object):
         print("\n设备名称: %s \n总数量:%s台" % (devices_list, len(devices_list)))
         return devices_list
 
-    def goto_home(self,times=1):
+    def goto_home(self, times=1):
         print('返回主页')
-        for r in range(0,times):
+        for r in range(0, times):
             self.input_keyevent(3)  # 返回主页
 
     def show_screen(self):
 
-        mScreenOn = re.search('mScreenOn=true', os.popen('adb -s %s shell dumpsys power'% (self.dname)).read())
+        mScreenOn = re.search('mScreenOn=true', os.popen('adb -s %s shell dumpsys power' % (self.dname)).read())
         print(mScreenOn)
         if mScreenOn == None:
             print('锁屏状态')
@@ -192,12 +202,16 @@ class ADButil(object):
         else:
             print('非锁屏状态')
 
-
+    def send_file(self, src_file_path, dest_dir='/sdcard/DCIM/Camera'):
+        os_system('adb -s %s push %s %s' % (self.dname, src_file_path, dest_dir))
+        os_system('adb -s %s shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///%s/%s' % (
+            self.dname, dest_dir, os.path.basename(src_file_path)))
 
     def goback(self, times=1):
         print('返回')
         for r in range(0, times):
             self.input_keyevent(4)  # 返回主页
+            time.sleep(1)
 
     def input_keyevent(self, keycode):
         # https://www.jianshu.com/p/bfc978d52e76
@@ -225,6 +239,7 @@ class ADButil(object):
         if zh_cn:
             text = base64.b64encode(text.encode('utf-8')).decode("utf-8")
             print('发送文本：' + text)
+            os_system('adb -s %s  shell ime set com.android.adbkeyboard/.AdbIME' % (self.dname))
             os_system('adb -s %s  shell ime set com.android.adbkeyboard/.AdbIME' % (self.dname))
             time.sleep(2)
             os_system('adb  -s %s shell am broadcast -a ADB_INPUT_B64 --es msg "%s"' % (
@@ -273,5 +288,8 @@ class ADButil(object):
 
 
 def os_system(cmd):
-    print(cmd)
-    os.system(cmd)
+    logger.debug(cmd)
+    ret = delegator.run(cmd, timeout=60)
+    logger.debug(ret.out+ret.err)
+
+    return ret

@@ -1,6 +1,7 @@
 # coding=utf-8
 import json
 import sys
+import time
 
 IS_PY3 = sys.version_info.major == 3
 if IS_PY3:
@@ -28,9 +29,9 @@ SECRET_KEY = 'H1clCsXeAmDYNhGQsVAbHG7iwePSigMH'
 # TEXT = "欢迎使用百度语音合成。"
 
 # 发音人选择, 0为普通女声，1为普通男生，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女声
-PER = 4
+PER = 111
 # 语速，取值0-15，默认为5中语速
-SPD = 5
+SPD = 4
 # 音调，取值0-15，默认为5中语调
 PIT = 5
 # 音量，取值0-9，默认为5中音量
@@ -86,7 +87,7 @@ def fetch_token():
         raise DemoError('MAYBE API_KEY or SECRET_KEY not correct: access_token or scope not found in token response')
 
 
-def text2audio(text, mp3_path='baidu_yuyin.mp3'):
+def text2audio(text, mp3_path='baidu_yuyin_%s.mp3' %(str(int(time.time())))):
     token = fetch_token()
     tex = quote_plus(text)  # 此处TEXT需要两次urlencode
     print(tex)
